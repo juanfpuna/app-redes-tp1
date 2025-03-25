@@ -1,8 +1,10 @@
 from django.db import models
 
+from proveedores.models import Proveedor
+
 # Create your models here.
 class Producto(models.Model):
-    proveedor = models.ForeignKey('Proveedor', on_delete=models.CASCADE)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE,to_field='documento' )
     nombre = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=200, blank=True, null=True)
     precio_costo = models.DecimalField(max_digits=10, decimal_places=2)
