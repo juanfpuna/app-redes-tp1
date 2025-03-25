@@ -1,0 +1,45 @@
+# Archivos de Python generados
+__pycache__/
+*.pyc
+*.pyd
+.Python
+build/
+dist/
+
+# Entornos Virtuales
+venv/
+.venv/
+env/
+.env/
+*/env/
+*/.env/
+
+# Archivos de la Base de Datos
+*.sqlite3
+
+# Archivos de Medios y Estáticos (si aplica)
+media/*
+static/*
+!media/.gitignore
+!static/.gitignore
+
+# Configuraciones Sensibles
+*.ini
+*.json
+*.env
+local_settings.py
+
+# Archivos de IDEs
+.idea/
+*.swp
+*~
+*.bak
+*.log
+.DS_Store
+
+# Archivos de Migraciones (con precaución)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Archivos de Recopilación de Estáticos
+staticfiles/
