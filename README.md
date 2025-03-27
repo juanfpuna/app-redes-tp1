@@ -40,11 +40,24 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 
     ```bash
     pip install django
+    sudo apt install python3-django #Usuarios linux
     ```
 
 **3. Navegar al Directorio del Proyecto:**
 
 * Asegúrate de que estás en el directorio raíz de tu proyecto (`app-redes-tp1`).
+
+**3-1 Instalar libreria restframework**
+
+* Para el funcionamiento del servicio de REST API es necesario tener instalado la libreria correspondiente. Esta libreria se encarga 
+de la serializacion de los modelos y la creacion de las rutas para las peticiones. Para instalar: 
+
+
+```
+pip install djangorestframework
+sudo apt install python3-djangorestframework #Usuarios linux
+
+```
 
 **4. Aplicar Migraciones:**
 
@@ -91,16 +104,6 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 
 * Presiona `Ctrl+C` en la terminal donde el servidor se está ejecutando.
 
-**Explicación del Código y la Estructura:**
-
-* `appredestp1/`: Este es tu directorio principal del proyecto.
-* `appredestp1/urls.py`: Este archivo define los patrones de URL para todo tu proyecto. Incluye las URLs de tus aplicaciones individuales (`facturas`, `clientes`, `proveedores`, `productos`).
-* `appredestp1/settings.py`: Este archivo contiene la configuración de tu proyecto (configuración de la base de datos, aplicaciones instaladas, etc.).
-* `facturas/`, `clientes/`, `proveedores/`, `productos/`: Estas son tus aplicaciones Django.
-    * `models.py`: Define los modelos de la base de datos (por ejemplo, `Factura`, `Cliente`, `Producto`).
-    * `views.py`: Contiene la lógica para manejar las solicitudes y generar respuestas.
-    * `urls.py`: Define los patrones de URL específicos para cada aplicación.
-* `manage.py`: Esta es una utilidad de línea de comandos para interactuar con tu proyecto Django.
 
 **Resumen de Comandos Clave:**
 

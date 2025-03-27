@@ -1,7 +1,24 @@
-from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-from django.http import HttpResponse
+from rest_framework import status
+from facturas.models import Factura
+from facturas.serializers import FacturaSerializer
 
-# Create your views here.
+@api_view(['GET'])
 def index(request):
-    return HttpResponse("Hola Mundo!. Estas en la vista de facturas")
+    facturas = Factura.objects.all()
+    serializer = FacturaSerializer(facturas, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def store(request):
+    serializer = FacturaSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+    
