@@ -6,13 +6,13 @@ class Cliente(models.Model):
         ('ruc', 'RUC'),
         ('ci', 'Cédula'),
     ]
-   
-    documento = models.CharField(max_length=20, unique=True, primary_key=True)
+    id = models.AutoField(primary_key=True)
+    documento = models.CharField(max_length=20, unique=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     direccion = models.CharField(max_length=200, blank=True, null=True)
     telefono = models.CharField(max_length=20, blank=True, null=True)
-    tipo_documento = models.CharField(max_length=10, choices=TIPO_DOCUMENTO_CHOICES)
+    tipo_documento = models.CharField(max_length=10, choices=TIPO_DOCUMENTO_CHOICES, default='ci')
     estado = models.BooleanField(default=True)
 
     def __str__(self):

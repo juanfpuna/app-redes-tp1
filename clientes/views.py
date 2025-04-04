@@ -22,5 +22,25 @@ def store(request):
         
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+@api_view(['PUT'])
+def update(request, pk):
+    cliente = Cliente.objects.get(pk=pk)
+    serializer = ClienteSerializer(cliente, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+        
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['DELETE'])
+def destroy(request, pk):
+    try: 
+        cliente = Cliente.objects.get(pk=pk)
+        cliente.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    except Cliente.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    
     
 
