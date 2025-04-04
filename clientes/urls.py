@@ -3,5 +3,8 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("store", views.store, name="store"),
+    path("", views.store, name="store"),
+    path("<int:pk>/", views.update, name="update"),
+    path("<int:pk>/", views.destroy, name="destroy"),
+    
 ]
