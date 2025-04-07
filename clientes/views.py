@@ -29,6 +29,12 @@ def index(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
             
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def show(request, pk):
+    cliente = get_object(pk)
+    serializer = ClienteSerializer(cliente)
+    return Response(serializer.data)
     
 @api_view(['PUT', 'PATCH'])
 def update(request, pk):
@@ -51,5 +57,7 @@ def destroy(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
     
     
+
     
+
 
