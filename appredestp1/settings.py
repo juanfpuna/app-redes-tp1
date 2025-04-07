@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'clientes',
     'productos',
     'facturas',
-    'apis'
+    'apis',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
