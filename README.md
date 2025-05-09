@@ -8,12 +8,17 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 * **Entorno Virtual (Recomendado):** Es altamente recomendable usar un entorno virtual para aislar las dependencias de tu proyecto.
 
 **Pasos:**
+<<<<<<< HEAD
 **1. Navegar al Directorio del Proyecto:**
 
 * Asegúrate de que estás en el directorio raíz de tu proyecto (`app-redes-tp1`).
 
 
 **2. Crear un Entorno Virtual (Opcional pero Recomendado):**
+=======
+
+**1. Crear un Entorno Virtual (Opcional pero Recomendado):**
+>>>>>>> 29de66b8a11d58eb7cccb6e95ccb832afdd8d1af
 
 * Navega al directorio raíz de tu proyecto (`app-redes-tp1`) en tu terminal.
 * Crea un entorno virtual:
@@ -38,14 +43,41 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 
     Deberías ver `(venv)` al principio de tu prompt de terminal, indicando que el entorno está activo.
 
+<<<<<<< HEAD
 **3. Instalar las dependencias:**
+=======
+**2. Instalar Django:**
+>>>>>>> 29de66b8a11d58eb7cccb6e95ccb832afdd8d1af
 
 * Con tu entorno virtual activado, instala Django:
 
     ```bash
+<<<<<<< HEAD
     pip install -r requirements.txt
     ```
 
+=======
+    pip install django
+    sudo apt install python3-django #Usuarios linux
+    ```
+
+**3. Navegar al Directorio del Proyecto:**
+
+* Asegúrate de que estás en el directorio raíz de tu proyecto (`app-redes-tp1`).
+
+**3-1 Instalar libreria restframework**
+
+* Para el funcionamiento del servicio de REST API es necesario tener instalado la libreria correspondiente. Esta libreria se encarga 
+de la serializacion de los modelos y la creacion de las rutas para las peticiones. Para instalar: 
+
+
+```
+pip install djangorestframework
+sudo apt install python3-djangorestframework #Usuarios linux
+
+```
+
+>>>>>>> 29de66b8a11d58eb7cccb6e95ccb832afdd8d1af
 **4. Aplicar Migraciones:**
 
 * Django usa migraciones para gestionar los cambios en el esquema de la base de datos. Ejecuta los siguientes comandos para crear y aplicar las migraciones iniciales:
