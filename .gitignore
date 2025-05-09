@@ -6,6 +6,12 @@ __pycache__/
 build/
 dist/
 
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
 # Entornos Virtuales
 venv/
 .venv/
@@ -13,6 +19,7 @@ env/
 .env/
 */env/
 */.env/
+myenv/
 
 # Archivos de la Base de Datos
 *.sqlite3

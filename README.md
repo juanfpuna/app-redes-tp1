@@ -8,8 +8,12 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 * **Entorno Virtual (Recomendado):** Es altamente recomendable usar un entorno virtual para aislar las dependencias de tu proyecto.
 
 **Pasos:**
+**1. Navegar al Directorio del Proyecto:**
 
-**1. Crear un Entorno Virtual (Opcional pero Recomendado):**
+* Asegúrate de que estás en el directorio raíz de tu proyecto (`app-redes-tp1`).
+
+
+**2. Crear un Entorno Virtual (Opcional pero Recomendado):**
 
 * Navega al directorio raíz de tu proyecto (`app-redes-tp1`) en tu terminal.
 * Crea un entorno virtual:
@@ -34,30 +38,13 @@ Proyecto de la clase de Programacion de Aplicaciones de Redes. Trabajo Practico
 
     Deberías ver `(venv)` al principio de tu prompt de terminal, indicando que el entorno está activo.
 
-**2. Instalar Django:**
+**3. Instalar las dependencias:**
 
 * Con tu entorno virtual activado, instala Django:
 
     ```bash
-    pip install django
-    sudo apt install python3-django #Usuarios linux
+    pip install -r requirements.txt
     ```
-
-**3. Navegar al Directorio del Proyecto:**
-
-* Asegúrate de que estás en el directorio raíz de tu proyecto (`app-redes-tp1`).
-
-**3-1 Instalar libreria restframework**
-
-* Para el funcionamiento del servicio de REST API es necesario tener instalado la libreria correspondiente. Esta libreria se encarga 
-de la serializacion de los modelos y la creacion de las rutas para las peticiones. Para instalar: 
-
-
-```
-pip install djangorestframework
-sudo apt install python3-djangorestframework #Usuarios linux
-
-```
 
 **4. Aplicar Migraciones:**
 

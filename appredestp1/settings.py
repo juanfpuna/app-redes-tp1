@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'facturas',
     'apis',
     'drf_yasg',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,7 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
     '/home/oscar/par2025/app-redes-tp1/venv/lib/python3.7/site-packages/drf_yasg/static',
 ]
+
+# settings.py
+DEFAULT_CHARSET = 'utf-8'
+FILE_CHARSET = 'utf-8'
