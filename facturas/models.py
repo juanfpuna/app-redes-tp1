@@ -14,7 +14,7 @@ class Factura(models.Model):
     
     id = models.AutoField(primary_key=True)
     cod_factura = models.CharField(max_length=20, unique=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, to_field='id')
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, to_field='id', related_name='cliente')
     nombre_empleado = models.CharField(max_length=100, blank=True, null=True)
     total_factura = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     estado = models.CharField(max_length=10, choices=ESTADO_FACTURA_CHOICES, default= 'abierta')
@@ -27,7 +27,7 @@ class Factura(models.Model):
     
 class DetalleFactura(models.Model):
     id = models.AutoField(primary_key=True)
-    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, to_field='id')
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, to_field='id', related_name='detalles')
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, to_field='id')
     cantidad = models.IntegerField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
