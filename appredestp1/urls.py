@@ -5,6 +5,12 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from django.http import HttpResponse
 
+from django.contrib.auth import views as auth_views
+
+from . import views
+
+
+
 # Vista de prueba para raíz
 def home(request):
     return HttpResponse("""
@@ -63,4 +69,7 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     path('proveedores/', include('proveedores.urls')),
     path('productos/', include('productos.urls')),
+    path('autenticarse', views.autenticarse, name='autenticarse'),
+    path('registrarse', views.registrarse, name='registrarse'),
+    
 ]

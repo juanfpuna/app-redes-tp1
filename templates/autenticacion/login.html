@@ -1,0 +1,44 @@
+{%extends 'base/base.html'%}
+
+{% block title %}Inicie sesion{% endblock %}
+
+{%block content%}
+
+
+<div class="container h-screen mx-auto flex items-center justify-center">
+
+    <main
+        class="grid lg:w-96 w-full grid-cols-1 max-sm:col-span-full max-sm:col-start-1 max-sm:row-span-full max-sm:bg-gray-950/5 max-sm:p-2 sm:line-y sm:col-start-3 sm:row-start-2 sm:-mx-px sm:p-[calc(0.5rem+1px)]">
+        <div class="grid grid-cols-1 items-center border border-gray-200 rounded-xl bg-white max-sm:p-6 sm:p-10">
+            <div class="grid grid-cols-1 gap-10">
+                <div class="flex items-start"><h3 class="font-semibold text-gray-900 text-xl">Iniciar Sesión</h3></div>
+                <div>
+                    <!-- <h1 class="sr-only">Log in to your Tailwind Plus account</h1> -->
+                    <form action="login" method="POST">
+                        {% csrf_token %}
+                        <div class="flex flex-col gap-2"><label for="documento"
+                                class="block text-sm/6 font-medium">Correo</label><input type="text" id="documento"
+                                class="block h-10 w-full appearance-none rounded-lg bg-white px-3 sm:text-sm outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950 data-error:outline-rose-500"
+                                required="" tabindex="1" value=""></div>
+                        <div class="relative mt-6">
+                            <div class="flex flex-col gap-2"><label for="password"
+                                    class="block text-sm/6 font-medium">Contraseña</label><input type="password"
+                                    id="password"
+                                    class="block h-10 w-full appearance-none rounded-lg bg-white px-3 sm:text-sm outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950 data-error:outline-rose-500"
+                                    required="" tabindex="1" value=""></div>
+                        </div>
+                        <button type="submit"
+                            class="mt-10 w-full inline-flex justify-center rounded-full text-sm/6 font-semibold bg-gray-950 text-white hover:bg-gray-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-950 px-4 py-2"
+                            tabindex="3">Iniciar sesión</button>
+
+                            <p class="mt-6 text-sm/6"><span class="text-gray-600">Aún no tiene cuenta?</span> <a class="font-semibold hover:text-gray-700" tabindex="5" href="/registrarse">Crea una cuenta <span aria-hidden="true">→</span></a></p>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</div>
+
+{%endblock%}
