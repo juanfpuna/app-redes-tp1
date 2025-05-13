@@ -111,3 +111,14 @@ sudo apt install python3-djangorestframework #Usuarios linux
 * `python manage.py migrate`: Aplica las migraciones a la base de datos.
 * `python manage.py createsuperuser`: Crea un usuario administrador.
 * `python manage.py runserver`: Inicia el servidor de desarrollo.
+
+## NUEVO
+
+**Retornar vistas**
+
+Para que django pueda gestionar plantillas es necesario configurar el parametro en el archivo settings.py. Para 
+eso hay que configurar lo siguiente en el archivo settings.py
+
+```
+'BACKEND': 'django.template.backends.django.DjangoTemplates', 
+```

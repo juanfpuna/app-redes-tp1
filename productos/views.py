@@ -5,6 +5,8 @@ from rest_framework import status
 
 from productos.models import Producto
 from productos.serializers import ProductoSerializer
+from django.views import View
+from django.shortcuts import render
 
 
 
@@ -13,7 +15,8 @@ def show(request, pk):
     try:
         producto = Producto.objects.get(pk=pk)
         serializer = ProductoSerializer(producto)
-        return Response(serializer.data)
+        return render(request, 'productos/producto.html', {'producto': serializer.data})
+        # return Response(serializer.data)
     except producto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error' : 'Producto no encontrado'})
 
@@ -23,7 +26,10 @@ def index(request):
         productos = Producto.objects.all()
         if request.method == 'GET':
             serializer = ProductoSerializer(productos, many=True)
-            return Response(serializer.data)
+            
+            return render(request, 'productos/index.html', {'productos': serializer.data})
+            
+            # return Response(serializer.data)
         if request.method == 'POST':
             serializer = ProductoSerializer(data=request.data)
             if serializer.is_valid():
