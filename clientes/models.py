@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from rest_framework import serializers
 
 class ClienteManager(BaseUserManager):
     def create_user(self, documento, password=None, **extra_fields):
@@ -37,7 +38,6 @@ class Cliente(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
-
     USERNAME_FIELD = 'documento'
     REQUIRED_FIELDS = ['nombre']  # Campos requeridos al crear un superusuario
 
@@ -51,3 +51,6 @@ class Cliente(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.nombre
+    
+    
+    

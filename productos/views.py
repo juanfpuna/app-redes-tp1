@@ -26,8 +26,9 @@ def index(request):
         productos = Producto.objects.all()
         if request.method == 'GET':
             serializer = ProductoSerializer(productos, many=True)
+            usuario = request.user
             
-            return render(request, 'productos/index.html', {'productos': serializer.data})
+            return render(request, 'productos/index.html', {'productos': serializer.data, 'usuario' : usuario})
             
             # return Response(serializer.data)
         if request.method == 'POST':

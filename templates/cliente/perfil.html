@@ -1,0 +1,58 @@
+
+{%extends 'base/base.html'%}
+
+{%block title%}Mi Perfil{%endblock%}
+
+{%block header%}
+    {%include 'base/navegacion.html'%}
+{%endblock%}
+
+
+{%block content%}
+    <div class="container px-10 pt-20 mx-auto">
+
+        <div class="flex items-center">
+            <div>
+
+                <h3 class="text-5xl text-slate-900 font-bold">Hola, {{ usuario.nombre}}</h3>
+                <p>{{usuario.direccion}}</p>
+                <p class="">{{usuario.documento}}</p>
+            </div>
+            <button class="p-2 rounded border border-gray-500 font-semibold ml-auto hover:bg-black hover:text-white">Cerrar sesión</button>
+        </div>
+
+        <section class="mt-10">
+
+            <h3 class="text-3xl text-slate-900 font-bold">Mi historial de compras</h3>
+
+            <div class="mt-5">
+                
+                {%if usuario.facturas|length == 0%}
+                    <p class="text-center">No hay compras realizadas</p>
+                {%else%}
+
+                <div class="flex gap-4 flex-wrap">
+
+                    {%for factura in usuario.facturas%}
+                    
+                    <div class="p-4 bg-gray-100 rounded">
+                        
+                        <h3>Cod: {{factura.cod_factura}}</h3>
+                        <p>Estado: {{factura.estado}}</p>
+                        
+                        <p>Monto: {{factura.total_factura}}</p>
+                        
+                        <button class="p-2 bg-indigo-500 text-white">Pagar</button>
+                        <button class="p-2 bg-red-500 text-white">Cancelar compra</button>
+                        
+                    </div>
+                    
+                    {%endfor%}
+                </div>
+                {%endif%}
+                
+            </div>
+        </section>
+
+    </div>
+{%endblock%}

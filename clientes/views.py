@@ -77,6 +77,17 @@ def autenticarse(request):
         form = AuthenticationForm()
     return render(request, 'autenticacion/login.html', {'form': form})
 
+@api_view(['GET'])
+def perfil(request):
+    if request.user.is_authenticated:
+        
+        cliente = Cliente.objects.get(documento=request.user.documento)
+        serializer = ClienteSerializer(cliente)
+        
+        return render(request, 'cliente/perfil.html', {'usuario': serializer.data})
     
+    else:
+        return redirect('autenticacion/login.html')
+
 
 
