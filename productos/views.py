@@ -15,6 +15,7 @@ def show(request, pk):
     try:
         producto = Producto.objects.get(pk=pk)
         serializer = ProductoSerializer(producto)
+        
         return render(request, 'productos/producto.html', {'producto': serializer.data})
         # return Response(serializer.data)
     except producto.DoesNotExist:

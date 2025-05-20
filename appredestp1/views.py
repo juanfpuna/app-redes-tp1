@@ -13,19 +13,27 @@ from clientes.forms import ClienteCreationForm, ClienteAuthenticationForm
 @api_view(['GET','POST'])
 def autenticarse(request):
     if request.method == 'POST':
-        form = ClienteAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            documento = form.cleaned_data.get('documento')
-            password = form.cleaned_data.get('password')
+        try:
+            
+            errors = {}
+            
+            documento = request.POST.get('documento')
+            password = request.POST.get('password')
             user = authenticate(documento=documento, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('pagina_de_inicio')  # Redirige a la página de inicio
-            else:
-                form.add_error(None, 'Documento o contraseña incorrectos.')
+            
+            login(request, user)
+            return redirect('home')  # Redirige a la página de inicio
+        
+               
+        except Exception as e:
+                   
+                    errors['general'] = f'Ocurrió un error al iniciar sesion: {e}'
+                    return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST})
     else:
-        form = ClienteAuthenticationForm()
-    return render(request, 'autenticacion/login.html', {'form': form})
+        if request.user.is_authenticated:
+            return redirect('home')
+        
+    return render(request, 'autenticacion/login.html')
 
 def registrarse(request):
     errors = {}
