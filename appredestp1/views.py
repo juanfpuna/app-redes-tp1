@@ -40,6 +40,12 @@ def autenticarse(request):
         
     return render(request, 'autenticacion/login.html')
 
+@api_view(['POST'])
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('autenticarse')
+
+
 def registrarse(request):
     errors = {}
     if request.method == 'POST':

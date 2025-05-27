@@ -6,7 +6,10 @@ from rest_framework import status
 from productos.models import Producto
 from productos.serializers import ProductoSerializer
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from proveedores.models import Proveedor
+
 
 
 
@@ -36,7 +39,8 @@ def index(request):
             serializer = ProductoSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()        
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return redirect('productos')
+            # Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(data= {'error' :str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -74,3 +78,7 @@ def delete(request, pk):
     
     
     
+@api_view(['GET'])
+def create(request):
+    proveedores = Proveedor.objects.all()    
+    return render(request, 'productos/crear.html', {'proveedores': proveedores})

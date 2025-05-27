@@ -71,5 +71,6 @@ urlpatterns = [
     path('productos/', include('productos.urls')),
     path('autenticarse', views.autenticarse, name='autenticarse'),
     path('registrarse', views.registrarse, name='registrarse'),
+    path('logout', views.cerrar_sesion),
     
 ]

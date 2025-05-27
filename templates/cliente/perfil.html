@@ -12,13 +12,16 @@
     <div class="container px-10 pt-20 mx-auto">
 
         <div class="flex items-center">
-            <div>
+            <div class="flex-auto">
 
                 <h3 class="text-5xl text-slate-900 font-bold">Hola, {{ usuario.nombre}}</h3>
                 <p>{{usuario.direccion}}</p>
                 <p class="">{{usuario.documento}}</p>
             </div>
-            <button class="p-2 rounded border border-gray-500 font-semibold ml-auto hover:bg-black hover:text-white">Cerrar sesión</button>
+            <form action="/logout" method="post">
+                {%csrf_token%}
+                <button class="p-2 rounded border border-gray-500 font-semibold hover:bg-black hover:text-white">Cerrar sesión</button>
+            </form>
         </div>
 
         <section class="mt-10">

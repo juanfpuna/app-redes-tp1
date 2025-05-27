@@ -6,5 +6,6 @@ urlpatterns = [
     path("<int:pk>", views.show, name="producto.ver"),
     path("<int:pk>/update", views.update, name="producto.actualizar"),
     path("<int:pk>/destroy", views.delete, name="producto.eliminar"),
+    path("crear", views.create, name="producto.crear"),
     
 ]

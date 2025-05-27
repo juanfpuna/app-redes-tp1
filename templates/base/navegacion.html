@@ -22,12 +22,13 @@
                 <a href="/productos" class="text-sm/6 font-semibold text-gray-900">Productos</a>
                 {%if request.user.is_authenticated%}
                     {%if request.user.is_superuser%}
-                        <a href="#" class="text-sm/6 font-semibold text-gray-900">Agregar productos</a>
+                        <a href="/productos/crear" class="text-sm/6 font-semibold text-gray-900"> Agregar productos</a>
                     {%endif%}
                 {%endif%}
+            
                 {%if request.user.is_authenticated%}
                     {%if request.user.is_superuser%}
-                        <a href="#" class="text-sm/6 font-semibold text-gray-900">Agregar proveedores</a>
+                        <a href="/proveedores/" class="text-sm/6 font-semibold text-gray-900"> Proveedores</a>
                     {%endif%}
                 {%endif%}
                 <a href="#" class="text-sm/6 font-semibold text-gray-900">Mis Compras</a>
