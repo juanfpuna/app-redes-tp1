@@ -20,18 +20,23 @@ def autenticarse(request):
             documento = request.POST.get('documento')
             password = request.POST.get('password')
             user = authenticate(documento=documento, password=password)
+
+            print(documento, password, user)
+
             
             login(request, user)
-            return redirect('home')  # Redirige a la página de inicio
+            return redirect('productos')
+            
+           
         
                
         except Exception as e:
                    
                     errors['general'] = f'Ocurrió un error al iniciar sesion: {e}'
-                    return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST})
+                    return render(request, 'autenticacion/login.html', {'errors': errors, 'form_data': request.POST})
     else:
         if request.user.is_authenticated:
-            return redirect('home')
+            return redirect('productos')
         
     return render(request, 'autenticacion/login.html')
 
@@ -63,7 +68,8 @@ def registrarse(request):
             pass  # No existe, podemos continuar
 
         if errors:
-            return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST})
+            print(errors)
+            return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST}, status=500)
         else:
             # --- CREACIÓN DEL USUARIO ---
             try:
@@ -75,11 +81,15 @@ def registrarse(request):
                     direccion=direccion,  
                     password=make_password(password)  # Hashea la contraseña
                 )
+
+
                 login(request, cliente)
                 return redirect('home')
             except Exception as e:
+
+                print(e)
                 errors['general'] = f'Ocurrió un error al crear la cuenta: {e}'
-                return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST})
+                return render(request, 'autenticacion/registrarse.html', {'errors': errors, 'form_data': request.POST}, 500)
 
     return render(request, 'autenticacion/registrarse.html')
 

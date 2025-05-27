@@ -13,7 +13,7 @@ class ClienteSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Cliente
-        fields = ('documento', 'nombre','direccion', 'estado', 'date_joined', 'last_login', 'facturas')
+        fields = ('documento', 'nombre','direccion', 'estado', 'date_joined', 'last_login', 'facturas', 'is_superuser', 'id')
         
 class ClienteBasicoSerializer(serializers.ModelSerializer):
     class Meta:

@@ -8,6 +8,7 @@ from clientes.serializers import ClienteSerializer
 
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import AuthenticationForm
 
 def get_object(pk):
@@ -29,7 +30,34 @@ def index(request):
     elif request.method == 'POST':
         serializer = ClienteSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+
+            nombre = request.data.get('nombre')
+            documento = request.data.get('documento')
+            tipo_documento = request.data.get('tipo_documento')
+            direccion = request.data.get('direccion')
+            password = request.data.get('password')
+
+
+            print(nombre, documento, tipo_documento, direccion, password, request.data.get('is_superuser', False))
+
+            cliente = Cliente.objects.create(
+                    nombre=nombre,
+                    documento=documento,
+                    is_superuser= request.data.get('is_superuser', False),
+                    tipo_documento=tipo_documento,
+                    direccion=direccion,  
+                    password=make_password(password)  # Hashea la contraseña
+                )
+            
+
+            print(cliente)
+            
+            serializer = ClienteSerializer(cliente)
+
+
+            print(serializer.data)
+
+
             return Response(serializer.data, status=status.HTTP_201_CREATED)
             
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -70,7 +98,7 @@ def autenticarse(request):
             user = authenticate(documento=documento, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('pagina_de_inicio')  # Redirige a la página de inicio
+                return redirect('productos')  # Redirige a la página de inicio
             else:
                 form.add_error(None, 'Documento o contraseña incorrectos.')
     else:

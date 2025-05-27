@@ -14,16 +14,21 @@
                 <div class="flex items-start"><h3 class="font-semibold text-gray-900 text-xl">Iniciar Sesión</h3></div>
                 <div>
                     <!-- <h1 class="sr-only">Log in to your Tailwind Plus account</h1> -->
+                     {%if errors.general%}
+    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        <span class="font-medium">Error!</span> {{  errors.general }}
+    </div>
+    {%endif%}
                     <form action="autenticarse" method="POST">
                         {% csrf_token %}
                         <div class="flex flex-col gap-2"><label for="documento"
-                                class="block text-sm/6 font-medium">Correo</label><input type="text" id="documento"
+                                class="block text-sm/6 font-medium">Correo</label><input type="text" id="documento" name="documento"
                                 class="block h-10 w-full appearance-none rounded-lg bg-white px-3 sm:text-sm outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950 data-error:outline-rose-500"
                                 required="" tabindex="1" value=""></div>
                         <div class="relative mt-6">
                             <div class="flex flex-col gap-2"><label for="password"
                                     class="block text-sm/6 font-medium">Contraseña</label><input type="password"
-                                    id="password"
+                                    id="password" name="password"
                                     class="block h-10 w-full appearance-none rounded-lg bg-white px-3 sm:text-sm outline -outline-offset-1 outline-gray-950/15 focus:outline-gray-950 data-error:outline-rose-500"
                                     required="" tabindex="1" value=""></div>
                         </div>

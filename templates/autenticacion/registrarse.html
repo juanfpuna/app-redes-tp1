@@ -32,8 +32,8 @@
                         <div class="mt-2">
                             <input type="text" name="nombre" id="nombre" autocomplete="given-name" required
                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                            {%if form.nombre.errors%}
-                            <div class="text-red-500 text-sm ">{{form.nombre.errors}}</div>
+                            {%if errors.nombre%}
+                            <div class="text-red-500 text-sm ">{{errors.nombre}}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                             <input type="text" name="direccion" id="direccion" autocomplete="direccion"
                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         </div>
-                        {%if form.direccion.errors%}
-                        <div class="text-red-500 text-sm">{{form.direccion.errors}}</div>
+                        {%if errors.direccion%}
+                        <div class="text-red-500 text-sm">{{errors.direccion}}</div>
                         {% endif %}
 
                     </div>
@@ -56,8 +56,8 @@
                         <div class="mt-2">
                             <input type="text" name="documento" id="documento" autocomplete="" required
                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                            {%if form.documento.errors%}
-                            <div class="text-red-500 text-sm">{{form.documento.errors}}</div>
+                            {%if errors.documento%}
+                            <div class="text-red-500 text-sm">{{errors.documento}}</div>
                             {% endif %}
 
                         </div>
@@ -68,8 +68,8 @@
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email"
                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                            {%if form.email.errors%}   
-                            <div class="text-red-500 text-sm">{{form.email.errors}}</div>
+                            {%if errors.email%}   
+                            <div class="text-red-500 text-sm">{{errors.email}}</div>
                             {% endif %}
                         </div>
                         
@@ -92,8 +92,8 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
-                        {%if form.tipo_documento.errors%}
-                        <div class="text-red-500 text-sm">{{form.tipo_documento.errors}}</div>
+                        {%if errors.tipo_documento%}
+                        <div class="text-red-500 text-sm">{{errors.tipo_documento}}</div>
                         {% endif %}
                     </div>
 
@@ -105,8 +105,8 @@
                             <input type="password" name="password" id="password" autocomplete="password" required
                                 class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
                         </div>
-                        {%if form.password.errors%}
-                        <div class="text-red-500 text-sm">{{form.password.errors}}</div>
+                        {%if errors.password%}
+                        <div class="text-red-500 text-sm">{{errors.password}}</div>
                         {% endif %}
 
                     </div>
