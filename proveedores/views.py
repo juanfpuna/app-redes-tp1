@@ -3,6 +3,8 @@ from rest_framework.response import Response
 
 from rest_framework import status
 
+from django.shortcuts import render, redirect
+
 from proveedores.models import Proveedor
 from proveedores.serializers import ProveedorSerializer
 
@@ -18,12 +20,13 @@ def index(request):
     if request.method == 'GET':
         proveedores = Proveedor.objects.all()
         serializer = ProveedorSerializer(proveedores, many=True)
-        return Response(serializer.data)
+        return render(request, 'proveedores/index.html', {'proveedores':serializer.data})
+    
     if request.method == 'POST':
         serializer = ProveedorSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return redirect('proveedores.index')
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -54,4 +57,8 @@ def delete(request, pk):
     proveedor = get_object(pk)
     proveedor.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def create(request):
+    return render(request, 'proveedores/crear.html')
     

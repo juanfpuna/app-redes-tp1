@@ -1,13 +1,17 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Productos{% endblock %}
+{% block title %}Producto - {{producto.nombre}}{% endblock %}
+
+{% block header %}
+{%include 'base/navegacion.html'%}
+{% endblock %}
 
 {% block content %}
 <div class="pt-20">
     <div class="pt-6">
         <nav aria-label="Breadcrumb">
             <ol role="list" class="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-                
+
                 <li>
                     <div class="flex items-center">
                         <a href="/productos/" class="mr-2 text-sm font-medium text-gray-900">Productos</a>
@@ -19,67 +23,88 @@
                 </li>
 
                 <li class="text-sm">
-                    <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{producto.nombre}}</a>
+                    <a href="#" aria-current="page"
+                        class="font-medium text-gray-500 hover:text-gray-600">{{producto.nombre}}</a>
                 </li>
             </ol>
         </nav>
 
-      
+
 
         <!-- Product info -->
         <div
             class="mx-auto max-w-2xl px-4 pt-10 pb-16 sm:px-6  lg:max-w-7xl flex-row lg:flex lg:gap-x-8 lg:px-8 lg:pt-16 lg:pb-24">
-            
-             <div class="mt-4  w-1/3 lg:mt-0">
-                 <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
-                alt=""
-                class="aspect-4/5 size-full object-cover sm:rounded-lg lg:aspect-auto">
-            </div>
-            
-            
-            <div class="flex-auto">
-                <div class="lg:col-span-3  lg:pr-8">
-                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{producto.nombre}}</h1>
-                </div>
 
-                <div class="py-10 lg:row-span-3 lg:col-start-1 lg:pt-6 lg:pr-8 lg:pb-16">
-                    <!-- Description and details -->
-                    <div>
-                        <h3 class="sr-only">Descripcion</h3>
-    
-                        <div class="space-y-6">
-                            <p class="text-base text-gray-900">{{producto.descripcion}}</p>
-                        </div>
+            <div class="mt-4  w-1/3 lg:mt-0">
+                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-02-featured-product-shot.jpg"
+                    alt="" class="aspect-4/5 size-full object-cover sm:rounded-lg lg:aspect-auto">
+            </div>
+
+            <form action="/facturas/ventas/productos" method="POST">
+
+                {%csrf_token%}
+
+                <input type="text" hidden name="producto" id="producto" value="{{producto.id}}">
+
+
+                <div class="flex-auto">
+                    <div class="lg:col-span-3  lg:pr-8">
+                        <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">{{producto.nombre}}</h1>
                     </div>
-    
-                    <div class="mt-10">
-                        <h2 class="sr-only">Informacion del producto</h2>
-                        <p class="text-3xl tracking-tight text-gray-900">Gs. {{producto.precio_venta}}</p>
-    
-                        <div class="">
-                            <div class="flex items-center justify-between">
-                                {% if producto.stock < 10 %} <h3 class="text-sm font-semibold text-red-600">Solo quedan
-                                    {{producto.stock}} unidades</h3>
-                                    {%else%}
-                                    <h3 class="text-sm font-semibold text-green-900">Quedan {{producto.stock}} unidades</h3>
-                                    {%endif%}
-    
+
+                    <div class="py-10 lg:row-span-3 lg:col-start-1 lg:pt-6 lg:pr-8 lg:pb-16">
+                        <!-- Description and details -->
+                        <div>
+                            <h3 class="sr-only">Descripcion</h3>
+
+                            <div class="space-y-6">
+                                <p class="text-base text-gray-900">{{producto.descripcion}}</p>
                             </div>
                         </div>
-    
-                        <form class="">
-                            <!-- Colors -->
-                            <button type="submit"
-                                class="mt-10 flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
-                                Agregar al carrito</button>
-    
-    
-                        </form>
+
+                        <div class="mt-4 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                            <div class="sm:col-span-1">
+                                <label for="cantidad" class="block text-sm/6 font-medium text-gray-900">Cantidad</label>
+                                <div class="mt-2">
+                                    <input type="number" name="cantidad" id="cantidad" value="1" min="1"
+                                        max="{{producto.stock}}" step="1"
+                                        class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-10">
+                            <h2 class="sr-only">Informacion del producto</h2>
+                            <p class="text-3xl tracking-tight text-gray-900">Gs. {{producto.precio_venta}}</p>
+
+                            <div class="">
+                                <div class="flex items-center justify-between">
+                                    {% if producto.stock < 10 %} <h3 class="text-sm font-semibold text-red-600">Solo
+                                        quedan
+                                        {{producto.stock}} unidades</h3>
+                                        {%else%}
+                                        <h3 class="text-sm font-semibold text-green-900">Quedan {{producto.stock}}
+                                            unidades</h3>
+                                        {%endif%}
+
+                                </div>
+                            </div>
+
+                            <form class="">
+                                <!-- Colors -->
+                                <button type="submit"
+                                    class="mt-10 flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
+                                    Agregar al carrito</button>
+
+
+                            </form>
+                        </div>
+
+
                     </div>
-    
-    
                 </div>
-            </div>
+
+            </form>
 
         </div>
     </div>

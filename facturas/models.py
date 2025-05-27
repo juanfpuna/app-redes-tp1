@@ -14,7 +14,7 @@ class Factura(models.Model):
     
     id = models.AutoField(primary_key=True)
     cod_factura = models.CharField(max_length=20, unique=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, to_field='id', related_name='cliente')
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, to_field='id', related_name='facturas')
     nombre_empleado = models.CharField(max_length=100, blank=True, null=True)
     total_factura = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     estado = models.CharField(max_length=10, choices=ESTADO_FACTURA_CHOICES, default= 'abierta')

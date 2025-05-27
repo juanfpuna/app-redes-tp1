@@ -6,7 +6,10 @@ from rest_framework import status
 from productos.models import Producto
 from productos.serializers import ProductoSerializer
 from django.views import View
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from proveedores.models import Proveedor
+
 
 
 
@@ -15,6 +18,7 @@ def show(request, pk):
     try:
         producto = Producto.objects.get(pk=pk)
         serializer = ProductoSerializer(producto)
+        
         return render(request, 'productos/producto.html', {'producto': serializer.data})
         # return Response(serializer.data)
     except producto.DoesNotExist:
@@ -26,15 +30,17 @@ def index(request):
         productos = Producto.objects.all()
         if request.method == 'GET':
             serializer = ProductoSerializer(productos, many=True)
+            usuario = request.user
             
-            return render(request, 'productos/index.html', {'productos': serializer.data})
+            return render(request, 'productos/index.html', {'productos': serializer.data, 'usuario' : usuario})
             
             # return Response(serializer.data)
         if request.method == 'POST':
             serializer = ProductoSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.save()        
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return redirect('productos')
+            # Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         return Response(data= {'error' :str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -72,3 +78,7 @@ def delete(request, pk):
     
     
     
+@api_view(['GET'])
+def create(request):
+    proveedores = Proveedor.objects.all()    
+    return render(request, 'productos/crear.html', {'proveedores': proveedores})
