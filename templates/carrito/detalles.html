@@ -58,10 +58,10 @@
                         <p class="text-gray-500">Subtotal</p>
                         <p class="">{{factura.total_factura}} Gs.</p>
                     </div>
-                    <div class="flex justify-between">
+                    <!-- <div class="flex justify-between">
                         <p class="text-gray-500">Impuestos 10%</p>
                         <p class="">11.350 Gs.</p>
-                    </div>
+                    </div> -->
                     <div class="flex justify-between">
                         <p class="text-gray-500">Envio</p>
                         <p class="">0 Gs.</p>
@@ -73,11 +73,14 @@
                     <p class="text-3xl tracking-tight text-gray-900">{{ factura.total_factura}} Gs.</p>
 
                 </div>
-               
-                <button type="submit" {%if factura.estado == 'anulada'%}disabled{%endif%}
+               <form action="/facturas/ventas/{{factura.id}}/pagar" method="post">
+                    {%csrf_token%}
+
+                   <button type="submit" {%if factura.estado != 'abierta'%}disabled{%endif%}
                     class="mt-10 flex w-full items-center justify-center disabled:bg-gray-300 disabled:cursor-not-allowed disabled:opacity-50 rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden">
                     Proceder al pago
-                </button>
+                    </button>
+                </form>
 
                 <div class="mt-6 flex justify-center text-center text-sm text-gray-500">
                     {%if factura.estado == 'anulada'%}
@@ -85,6 +88,8 @@
                         <p class="italic">La canasta ha sido anulada</p>
 
                     {%else%}
+
+                        {%if factura.estado == 'abierta'%}
 
                         <p>
                             o
@@ -102,6 +107,8 @@
                         </form>
 
                         </p>
+
+                        {%endif%}
                     {%endif%}
                     
 
@@ -132,7 +139,7 @@
                                     {%for detalle in factura.detalles%}
                                     <li class="flex py-6">
                                         <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                            <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+                                            <img src="{{detalle.producto.imagen_url}}"
                                                 alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
                                                 class="size-full object-cover">
                                         </div>
@@ -147,12 +154,19 @@
                                                 </div>
                                                 <!-- <p class="mt-1 text-sm text-gray-500">Salmon</p> -->
                                             </div>
+                                            <div>
+                                                <p class="text-gray-500">{{detalle.producto.descripcion}}</p>
+                                            </div>
                                             <div class="flex flex-1 items-end justify-between text-sm">
                                                 <p class="text-gray-500">Cantidad: {{detalle.cantidad}}</p>
 
                                                 <div class="flex">
-                                                    <button type="button"
-                                                        class="font-medium text-indigo-600 hover:text-indigo-500">Eliminar</button>
+                                                    <form action="ventas/{{factura.id}}/productos" method="POST">
+                                                        {%csrf_token%}
+                                                        <input id="detalle" type="text" name="detalle" hidden value="{{detalle.id}}">
+                                                        <button type="submit"
+                                                        class="font-medium text-red-600 hover:text-red-400 cursor-pointer">Eliminar</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>

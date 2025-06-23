@@ -41,7 +41,7 @@
                     <div class="p-4 bg-white rounded border border-gray-200 shadow-md w-64">
                         <div class="flex justify-between">
 
-                            <h3 class="text-gray-500 font-bold">Cod: {{factura.cod_factura}}</h3>
+                            <h3 class="text-gray-500 font-bold truncate">Cod: {{factura.cod_factura}}</h3>
                             {%if factura.estado == 'anulada'%}
                             <span class="px-2 py-1 text-xs font-medium uppercase bg-yellow-100 border border-yellow-500 text-yellow-500 rounded">{{factura.estado}}</span>
                             {%else%}
@@ -54,10 +54,21 @@
                         <h3 class="text-3xl font-semibold mt-4"> {{factura.total_factura}} Gs.</h3>
 
                         <div class="mt-4">
+                            {%if factura.estado == 'cerrada'%}
 
-                            <a href="/facturas/{{factura.id}}" class="p-2 w-full bg-blue-100 border rounded text-blue-500 text-sm flex items-center font-semibold">
+                            <a href="/facturas/{{factura.id}}/finalizado" class="p-2 w-full bg-blue-100 border rounded text-blue-500 text-sm flex items-center font-semibold">
+                                <i class="material-symbols-outlined mr-2">visibility</i>
+                                Ver compra</a>
+
+
+                            {%else%}
+
+                             <a href="/facturas/{{factura.id}}" class="p-2 w-full bg-blue-100 border rounded text-blue-500 text-sm flex items-center font-semibold">
                                 <i class="material-symbols-outlined mr-2">visibility</i>
                                 Ver carrito</a>
+
+                            {%endif%}
+
                             
                         </div>
                         

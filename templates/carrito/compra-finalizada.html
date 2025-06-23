@@ -36,7 +36,7 @@
                             {%for detalle in factura.detalles%}
                             <li class="flex py-6">
                                 <div class="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg"
+                                    <img src="{{detalle.producto.imagen_url}}"
                                         alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt."
                                         class="size-full object-cover">
                                 </div>
@@ -45,7 +45,7 @@
                                     <div>
                                         <div class="flex justify-between text-base font-medium text-gray-900">
                                             <h3>
-                                                <a href="#">{{detalle.producto.nombre}}</a>
+                                                <a href="/productos/{{detalle.producto.id}}">{{detalle.producto.nombre}}</a>
                                             </h3>
                                             <p class="ml-4">{{detalle.total}} Gs.</p>
                                         </div>
@@ -88,7 +88,7 @@
                     </div>
                     <div class="flex justify-between">
                         <p class="text-gray-500">Impuestos 10%</p>
-                        <p class="">11.350 Gs.</p>
+                        <p class="">{{impuesto}} Gs.</p>
                     </div>
                     <div class="flex justify-between">
                         <p class="text-gray-500">Envio</p>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="mt-4 border-t py-4 flex justify-between border-gray-200">
                     <p class="text-3xl tracking-tight text-gray-900">Total</p>
-                    <p class="text-3xl tracking-tight text-gray-900">{{ factura.total_factura}} Gs.</p>
+                    <p class="text-3xl tracking-tight text-gray-900">{{ factura.total_factura }} Gs.</p>
 
                 </div>
 
