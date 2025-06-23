@@ -5,6 +5,12 @@ from drf_yasg import openapi
 from rest_framework import permissions
 from django.http import HttpResponse
 
+from django.contrib.auth import views as auth_views
+
+from . import views
+
+
+
 # Vista de prueba para raíz
 def home(request):
     return HttpResponse("""
@@ -55,7 +61,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('', home, name='home'),  # Vista simple de prueba
+    path('', home ,name='home'),  # Vista simple de prueba
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('admin/', admin.site.urls),
@@ -63,4 +69,8 @@ urlpatterns = [
     path('clientes/', include('clientes.urls')),
     path('proveedores/', include('proveedores.urls')),
     path('productos/', include('productos.urls')),
+    path('autenticarse', views.autenticarse, name='autenticarse'),
+    path('registrarse', views.registrarse, name='registrarse'),
+    path('logout', views.cerrar_sesion),
+    
 ]

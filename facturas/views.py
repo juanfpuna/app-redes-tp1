@@ -9,9 +9,12 @@ from facturas.serializers import FacturaSerializer, DetalleFacturaSerializer
 
 
 from clientes.models import Cliente
+from django.shortcuts import render, redirect
 
 from productos.models import Producto
-from productos.serializers import ProductoSerializer
+
+from django.db.models import Sum
+
 
 def get_object(pk):
     try:
@@ -26,7 +29,19 @@ def index(request):
     
     facturas = Factura.objects.all()
     serializer = FacturaSerializer(facturas, many=True)
-    return Response(serializer.data)
+
+    ventas_abiertas = Factura.objects.filter(estado='abierta').count()
+    ventas_cerradas = Factura.objects.filter(estado='cerrada').count()
+    ventas_anuladas = Factura.objects.filter(estado='anulada').count()
+
+    total_ventas_cerradas_agg = Factura.objects.filter(estado='cerrada').aggregate(
+        total_sumado=Sum('total_factura')
+    )
+    total_ventas_cerradas = total_ventas_cerradas_agg['total_sumado'] if total_ventas_cerradas_agg['total_sumado'] is not None else 0.00
+
+
+    return render(request, 'facturas/index.html', {'facturas': serializer.data, 'ventas_abiertas': ventas_abiertas, 'ventas_cerradas': ventas_cerradas, 'ventas_anuladas': ventas_anuladas, 'total_ventas_cerradas': total_ventas_cerradas})
+
    
 @api_view(['GET'])
 def show(request, pk):
@@ -34,15 +49,34 @@ def show(request, pk):
         factura = Factura.objects.prefetch_related('detalles').get(pk=pk)
         
         serializer = FacturaSerializer(factura)
-        return Response(serializer.data)
+        return render(request, 'carrito/detalles.html', {'factura': serializer.data})
+    
+    
     except Factura.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'La factura solicitada no existe'})
     
     except Exception as e:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data= {'error': str(e)})
     
+@api_view(['GET'])
+def factura_cerrada(request, pk):
+    try:
+        factura = Factura.objects.prefetch_related('detalles').get(pk=pk)
+        if factura.estado != 'cerrada':
+            
+            return redirect('productos')
+        
+        serializer = FacturaSerializer(factura)
+        return render(request, 'carrito/compra-finalizada.html', {'factura': serializer.data, 'impuesto' : int( factura.total_factura / 11)})
+    
+    
+    except Factura.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'La factura solicitada no existe'})
+    
+    except Exception as e:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data= {'error': str(e)})
 
-@api_view(['PUT', 'PATCH'])
+@api_view(['POST'])
 def update(request, pk):
     factura = get_object(pk)
     
@@ -96,40 +130,93 @@ def iniciar_venta(request):
         
 
 @api_view(['POST'])
-def agregar_producto(request, pk):
+def agregar_producto(request):
     try:
-        factura = Factura.objects.get(pk=pk)
         
-        if factura.estado != 'abierta':
-            return Response(status=status.HTTP_400_BAD_REQUEST, data= {'error': 'La venta ya fue cerrada'})
+        cliente = request.user
         
+        if not cliente.is_authenticated:
+            return redirect('autenticarse')
+        
+        factura = cliente.facturas.filter(estado = 'abierta').order_by('-fecha_emision').first()
+        
+        if factura is None:
+            # cliente = Cliente.objects.get(pk=request.data.get('cliente'))
+            cod_factura = datetime.datetime.now().strftime('%d%H%M%S')
+            serializer = FacturaSerializer(data={
+                'cliente': cliente.id,
+                'nombre_empleado': 'web',
+                'cod_factura': cod_factura,
+                'fecha_emision': datetime.date.today(),
+                'total_factura' : 0,
+                
+                })
+            
+            if serializer.is_valid():
+            
+                factura = serializer.save()
+                    
         producto = Producto.objects.get(pk=request.data.get('producto'))
         
+        cantidad = int(request.data.get('cantidad'))
         
-        if producto.stock < request.data.get('cantidad'):
+        if cantidad <= 0:
+            cantidad = 1
+
+        
+        
+        if producto.stock < cantidad:
             return Response(status=status.HTTP_400_BAD_REQUEST, data= {'error': 'No hay suficiente stock. Stock actual es de ' + str(producto.stock) + ' unidades'})
+        
+        
         
         detalle_factura = DetalleFacturaSerializer(
             data={'factura': factura.id, 
-                  'producto': producto.id, 
-                  'cantidad': request.data.get('cantidad'), 
-                  'total': producto.precio_venta * request.data.get('cantidad')})
+                  'producto_id': producto.id, 
+                  'cantidad': cantidad, 
+                  'total': producto.precio_venta * cantidad})
         
         if detalle_factura.is_valid():
             detalle_factura.save()
         
-            return Response(detalle_factura.data, status=status.HTTP_201_CREATED)
+            factura.total_factura = factura.total_factura + producto.precio_venta * cantidad
+            factura.save()
         
-        return Response(detalle_factura.errors, status=status.HTTP_400_BAD_REQUEST)
+            return redirect('facturas.show', pk=factura.id)
+        
+        else:
+            return Response(detalle_factura.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        
     except factura.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'La factura solicitada no existe'})
     except producto.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'Producto no encontrado'})
     except Exception as e:
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data= {'error': str(e)}) 
+@api_view(['POST'])
+def quitar_producto(request, pk_factura):
+    try:
+        factura = Factura.objects.get(pk=pk_factura)
+        detalle = DetalleFactura.objects.get(pk = request.data.get('detalle'))
+        detalle.delete()
+        factura.total_factura = factura.total_factura - detalle.total
+
+        factura.save()
+        return redirect('facturas.show', pk=pk_factura)
+    
+    except DetalleFactura.DoesNotExist:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR, data= {'error': 'Detalle de factura no encontrado'})
+    
+    except Exception as e:
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR,data= {'error': str(e)})
+
+        
         
     
-@api_view(['PATCH'])
+    
+    
+@api_view(['POST'])
 def cerrar_venta(request, pk):
     
     try:
@@ -149,7 +236,7 @@ def cerrar_venta(request, pk):
         factura.estado = 'cerrada'
         factura.save()
         
-        return Response(status=status.HTTP_200_OK, data={"total": factura.total_factura, "cant_productos": factura.detalles.count()})
+        return redirect('compra_finalizada', pk=factura.id)
     
     except DetalleFactura.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'Detalle de factura no encontrado'})
@@ -169,7 +256,7 @@ def anular_venta(request, pk):
         
         factura.estado = 'anulada'
         factura.save()
-        return Response(status=status.HTTP_200_OK, data= {'mensaje': 'Factura anulada correctamente'})
+        return redirect('perfil')
     
     except factura.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND, data= {'error': 'La factura solicitada no existe'})

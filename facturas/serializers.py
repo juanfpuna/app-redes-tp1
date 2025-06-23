@@ -18,6 +18,13 @@ class FacturaSerializer(serializers.ModelSerializer):
         model = Factura
         fields = '__all__'
         
+        
+class FacturaBasicaSerializer(serializers.ModelSerializer):
+    detalles = DetalleFacturaSerializer(many=True, read_only=True)
+    class Meta:
+        model = Factura
+        fields = ['id', 'cod_factura', 'fecha_emision', 'total_factura', 'estado', 'detalles']
+        
 
 
         

@@ -1,0 +1,86 @@
+
+{%extends 'base/base.html'%}
+
+{%block title%}Mi Perfil{%endblock%}
+
+{%block header%}
+    {%include 'base/navegacion.html'%}
+{%endblock%}
+
+
+{%block content%}
+    <div class="container px-10 pt-20 mx-auto">
+
+        <div class="flex items-center">
+            <div class="flex-auto">
+
+                <h3 class="text-5xl text-slate-900 font-bold">Hola, {{ usuario.nombre}}</h3>
+                <p>{{usuario.direccion}}</p>
+                <p class="">{{usuario.documento}}</p>
+            </div>
+            <form action="/logout" method="post">
+                {%csrf_token%}
+                <button class="p-2 rounded border border-gray-500 font-semibold hover:bg-black hover:text-white">Cerrar sesión</button>
+            </form>
+        </div>
+
+        <section class="mt-10">
+
+            <h3 class="text-3xl text-slate-900 font-bold">Mi historial de compras</h3>
+
+            <div class="mt-5">
+                
+                {%if usuario.facturas|length == 0%}
+                    <p class="text-center">No hay compras realizadas</p>
+                {%else%}
+
+                <div class="flex gap-4 flex-wrap">
+
+                    {%for factura in usuario.facturas%}
+                    
+                    <div class="p-4 bg-white rounded border border-gray-200 shadow-md w-64">
+                        <div class="flex justify-between">
+
+                            <h3 class="text-gray-500 font-bold truncate">Cod: {{factura.cod_factura}}</h3>
+                            {%if factura.estado == 'anulada'%}
+                            <span class="px-2 py-1 text-xs font-medium uppercase bg-yellow-100 border border-yellow-500 text-yellow-500 rounded">{{factura.estado}}</span>
+                            {%else%}
+                            <span class="px-2 py-1 text-xs font-medium uppercase bg-green-100 border border-green-500 text-green-500 rounded">{{factura.estado}}</span>
+                            {%endif%}
+                        </div>
+
+                        <p class="text-gray-700 text-sm mt-2">{{factura.detalles | length}} productos en la canasta</p>
+                        
+                        <h3 class="text-3xl font-semibold mt-4"> {{factura.total_factura}} Gs.</h3>
+
+                        <div class="mt-4">
+                            {%if factura.estado == 'cerrada'%}
+
+                            <a href="/facturas/{{factura.id}}/finalizado" class="p-2 w-full bg-blue-100 border rounded text-blue-500 text-sm flex items-center font-semibold">
+                                <i class="material-symbols-outlined mr-2">visibility</i>
+                                Ver compra</a>
+
+
+                            {%else%}
+
+                             <a href="/facturas/{{factura.id}}" class="p-2 w-full bg-blue-100 border rounded text-blue-500 text-sm flex items-center font-semibold">
+                                <i class="material-symbols-outlined mr-2">visibility</i>
+                                Ver carrito</a>
+
+                            {%endif%}
+
+                            
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    {%endfor%}
+                </div>
+                {%endif%}
+                
+            </div>
+        </section>
+
+    </div>
+{%endblock%}
